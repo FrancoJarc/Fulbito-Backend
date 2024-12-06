@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=platform-learning
+      - POSTGRES_USER=franco
+      - POSTGRES_PASSWORD=franco
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - 5050:80
+    volumes:
+      - ./pgadmin_data:/var/lib/pgadmin
