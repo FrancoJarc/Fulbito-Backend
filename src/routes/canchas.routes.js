@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { canchasDB } from "../data/canchas.data.js";
-import { validateId } from "../middlewares/validate.js";
+import { validateDto, validateId } from "../middlewares/validate.js";
+import { canchaDto } from "../dtos/cancha.dto.js";
 
 export const canchasRouter = Router();
 
@@ -22,16 +23,9 @@ canchasRouter.get("/", (req, res) => {
 });
 
 
-canchasRouter.post("/", (req, res) => {
-    // request.body => Obtenemos la información de la petición
-    // const name = req.body.name // Primer forma
-    const { nombre, precio, capacidad, calle, telefono } = req.body; // Segunda forma
+canchasRouter.post("/", validateDto(canchaDto), (req, res) => {
 
-    if (!nombre || !precio || !capacidad || !calle || !telefono) {
-        return res.status(400).json({
-            error: "Todos los campos son requeridos",
-        });
-    }
+    const { nombre, precio, capacidad, calle, telefono } = req.body; // Segunda forma
 
     if (isNaN(Number(precio))) {
         return res.status(400).json({
@@ -70,12 +64,12 @@ canchasRouter.get("/:id", validateId, (req, res) => {
 
     if (!cancha) {
         return res.json({
-            mensaje: "Producto no encontrado",
+            mensaje: "Cancha no encontrada",
         });
     }
 
     res.json({
-        product,
+        cancha,
     });
 });
 
