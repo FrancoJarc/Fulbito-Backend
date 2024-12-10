@@ -12,3 +12,51 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Usuarios {
+  id         String     @id @default(uuid())
+  nombre     String
+  apellido   String
+  dni        BigInt
+  telefono   BigInt
+  correo     String     @unique
+  contrasena String
+  rol        String     @default("jugador")
+  Reservas   Reservas[]
+}
+
+model Canchas {
+  id          String     @id @default(uuid())
+  nombre      String
+  telefono    BigInt
+  capacidad   Int
+  precio_hora Float
+  calle       String
+  Reservas    Reservas[]
+  Horarios    Horarios[]
+}
+
+model Reservas {
+  id String @id @default(uuid())
+
+  id_cancha String
+  cancha    Canchas @relation(fields: [id_cancha], references: [id])
+
+  id_usuario     String
+  usuario        Usuarios @relation(fields: [id_usuario], references: [id])
+  fecha_reserva  String
+  horario_inicio String
+  horario_fin    String
+}
+
+model Horarios {
+  id        String  @id @default(uuid())
+  id_cancha String
+  cancha    Canchas @relation(fields: [id_cancha], references: [id])
+
+  horario_inicio     String
+  horario_fin        String
+  dias_semana_inicio String
+  dias_semana_fin    String
+
+}

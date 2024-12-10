@@ -5,6 +5,6 @@ export const canchaDto = Joi.object({
     precio: Joi.number().positive().required(),
     capacidad: Joi.number().integer().positive().required(), 
     calle: Joi.string().min(2).required(), 
-    telefono: Joi.string().min(8).max(14).required(), 
+    telefono: Joi.number().integer().required(), 
     
 })
