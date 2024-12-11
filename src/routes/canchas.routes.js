@@ -13,7 +13,10 @@ canchasRouter.get("/", async (req, res) => {
 
     const canchas = await prisma.canchas.findMany({
         take: Number(limit),
+
     })
+
+
 
     res.json({
         canchas,
@@ -26,12 +29,12 @@ canchasRouter.get("/", async (req, res) => {
 
 canchasRouter.post("/", validateDto(canchaDto), async (req, res) => {
 
-    const { nombre, precio, capacidad, calle, telefono } = req.body; // Segunda forma
+    const { nombre, precio_hora, capacidad, calle, telefono } = req.body; // Segunda forma
 
-    const precioNum = parseFloat(precio);
-    if (isNaN(precioNum)) {
+    const precioHoraNum = parseFloat(precio_hora);
+    if (isNaN(precioHoraNum) || precioHoraNum <= 0) {
         return res.status(400).json({
-            error: "El precio debe ser un número",
+            error: "El precio por hora debe ser un número positivo",
         });
     }
 
@@ -50,18 +53,6 @@ canchasRouter.post("/", validateDto(canchaDto), async (req, res) => {
         });
     }
 
-    const cancha = {
-        nombre,
-        telefono: telefonoNum, 
-        capacidad: capacidadNum,
-        precio: precioNum, 
-        calle,
-  
-    };
-
-
-    //canchasDB.push(cancha);
-
     try {
         const newCancha = await prisma.canchas.create({
             data: cancha,
@@ -71,19 +62,24 @@ canchasRouter.post("/", validateDto(canchaDto), async (req, res) => {
             mensaje: "Cancha guardada",
             cancha: newCancha,
         });
-    
+
     } catch (error) {
         res.status(500).json({
             mensaje: `Error al crear la cancha.${error}`,
         });
-   }
+    }
 });
 
 
-canchasRouter.get("/:id", validateId, (req, res) => {
+canchasRouter.get("/:id", validateId, async (req, res) => {
 
     const { id } = req.params;
-    const cancha = canchasDB.find((cancha) => cancha.id === Number(id));
+
+    const cancha = await prisma.canchas.findFirst({
+        where: {
+            id
+        }
+    })
 
     if (!cancha) {
         return res.json({
@@ -98,49 +94,55 @@ canchasRouter.get("/:id", validateId, (req, res) => {
 
 
 
-canchasRouter.put("/:id", validateId,(req, res) => {
+canchasRouter.put("/:id", async (req, res) => {
     const { id } = req.params;
-    const cancha = canchasDB.find((p) => p.id === Number(id));
+    const cancha = await prisma.canchas.findFirst({
+        where: {
+            id
+        }
+    })
 
     if (!cancha) {
         return res.status(404).json({ error: "La cancha no existe" });
     }
 
-    const canchaIndex = canchasDB.findIndex((p) => p.id === Number(id));
+    const { nombre, precio_hora, capacidad, calle, telefono } = req.body;
 
-    const { nombre, precio, capacidad, calle, telefono } = req.body;
+    const updatedCancha = await prisma.canchas.update({
+        where: {
+            id
+        },
+        data: {
+            nombre: nombre ?? cancha.nombre,
+            precio_hora: precio_hora ?? cancha.precio_hora,
+            capacidad: capacidad ?? cancha.capacidad,
+            calle: calle ?? cancha.calle,
+            telefono: telefono ?? cancha.telefono
+            
+        }
 
-    const newProduct = {
-        id: cancha.id,
-        nombre: nombre ?? cancha.nombre,
-        precio: precio ?? cancha.precio,
-        capacidad: capacidad ?? cancha.capacidad,
-        calle: calle ?? cancha.calle,
-        telefono: telefono ?? cancha.telefono,
-    };
+    })
 
-    canchasDB[canchaIndex] = newProduct;
 
     res.json({
         mensaje: "Cancha actualizada",
-        cancha: newProduct,
+        cancha: updatedCancha,
     });
 });
 
-canchasRouter.delete("/:id", validateId, (req, res) => {
+canchasRouter.delete("/:id",  async (req, res) => {
     const { id } = req.params;
-    const cancha = canchasDB.find((p) => p.id === Number(id));
 
-    if (!cancha) {
-        return res.status(404).json({ error: "La cancha no existe" });
+    try {
+        const cancha = await prisma.canchas.delete({
+            where: { id },
+        });
+
+        res.json({
+            mensaje: "Cancha eliminada",
+            cancha,
+        });
+    } catch (error) {
+        res.status(404).json({ error: "La cancha no existe o no se pudo eliminar" });
     }
-
-    const canchaIndex = canchasDB.findIndex((p) => p.id === Number(id));
-
-    canchasDB.splice(canchaIndex, 1);
-
-    res.json({
-        mensaje: "Producto eliminado",
-        cancha,
-    });
 });

@@ -28,7 +28,7 @@ model Usuarios {
 model Canchas {
   id          String     @id @default(uuid())
   nombre      String
-  telefono    BigInt
+  telefono    Int
   capacidad   Int
   precio_hora Float
   calle       String
