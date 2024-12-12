@@ -2,15 +2,17 @@ import { Router } from "express";
 import { validateDto, validateId } from "../middlewares/validate.js";
 import { canchaDto } from "../dtos/cancha.dto.js";
 import { CanchaController } from "../controllers/canchas.controllers.js";
+import { authenticate } from "../middlewares/authenticate.js";
+import { authorization } from "../middlewares/authorization.js";
 
 export const canchasRouter = Router();
 
-canchasRouter.get("/", CanchaController.getAll);
+canchasRouter.get("/", authenticate,CanchaController.getAll);
 
-canchasRouter.post("/", validateDto(canchaDto), CanchaController.create);
+canchasRouter.post("/", authenticate, authorization("dueño"), validateDto(canchaDto), CanchaController.create);
 
-canchasRouter.get("/:id", validateId, CanchaController.getByID);
+canchasRouter.get("/:id", authenticate, validateId, CanchaController.getByID);
 
-canchasRouter.put("/:id", CanchaController.update);
+canchasRouter.put("/:id",authenticate, CanchaController.update);
 
-canchasRouter.delete("/:id", CanchaController.delete);
+canchasRouter.delete("/:id", authenticate, CanchaController.delete);

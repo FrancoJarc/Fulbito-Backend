@@ -1,6 +1,6 @@
 import { prisma } from "../providers/prisma.provider.js";
 
-export class UserService{
+export class UserService {
     static async getAll() {
         return prisma.usuarios.findMany();
     }
@@ -23,9 +23,17 @@ export class UserService{
         })
     }
 
-    static async create(usuario) {
+    static async create({ nombre, apellido, dni, telefono, correo, contrasena, rol }) {
         return prisma.usuarios.create({
-            data: usuario,
+            data: {
+                nombre,
+                apellido,
+                dni,
+                telefono,
+                correo,
+                contrasena,
+                rol
+            },
         })
     }
 

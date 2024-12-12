@@ -18,8 +18,15 @@ export class AuthController {
                 return res.status(401).json({ error: "La contraseña es incorrecta" });
             }
 
+            const token = createToken({
+                userId: user.id,
+                email: user.correo,
+                role: user.rol,
+            });
+
             res.json({
-                mensaje: "Login exitoso"
+                mensaje: "Login exitoso",
+                token
             })
         } catch (error) {
 
@@ -37,7 +44,7 @@ export class AuthController {
 
         try {
             const contrasenaHash = await hashPassword(contrasena)
-            const usuario = {
+            const user = await UserService.create({
                 nombre,
                 apellido,
                 dni,
@@ -45,11 +52,11 @@ export class AuthController {
                 correo,
                 contrasena: contrasenaHash,
                 rol
-            };
-
-            const user = await UserService.create({
-                usuario
             })
+
+            res.json({
+                user,
+            });
 
         } catch (error) {
             res.json({
@@ -61,6 +68,12 @@ export class AuthController {
     }
 
     static async profile(req, res) {
+
+            console.log(user);
+
+            res.json({
+                user,
+            });
 
     }
 }
