@@ -17,12 +17,17 @@ model Usuarios {
   id         String     @id @default(uuid())
   nombre     String
   apellido   String
-  dni        BigInt
-  telefono   BigInt
+  dni        Int
+  telefono   Int
   correo     String     @unique
   contrasena String
-  rol        String     @default("jugador")
+  rol        UserRole   @default(jugador)
   Reservas   Reservas[]
+}
+
+enum UserRole {
+  jugador
+  dueño
 }
 
 model Canchas {
@@ -58,5 +63,4 @@ model Horarios {
   horario_fin        String
   dias_semana_inicio String
   dias_semana_fin    String
-
 }

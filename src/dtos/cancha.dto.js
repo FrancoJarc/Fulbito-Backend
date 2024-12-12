@@ -8,3 +8,5 @@ export const canchaDto = Joi.object({
     calle: Joi.string().min(2).required(), 
     
 })
+
+// se podria crear el de usuario tmb

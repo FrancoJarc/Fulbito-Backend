@@ -1,12 +1,13 @@
 import express from "express";
 import { canchasRouter } from "./routes/canchas.routes.js";
 import { usersRouter } from "./routes/users.routes.js";
+import { authRouter } from "./routes/auth.routes.js";
 import morgan from "morgan";
 
 const app = express();
 const PORT = 5000;
 
-app.use(express.json());  
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
@@ -32,10 +33,10 @@ app.get("/info", (req, res) => {
 // Rutas
 app.use("/api/canchas", canchasRouter);
 app.use("/api/users", usersRouter);
+app.use("/api/auth", authRouter);
 
 
 
 
 
-
-app.listen(PORT, () =>{ console.log('Server running on http://localhost:${PORT}')})
+app.listen(PORT, () => { console.log('Server running on http://localhost:${PORT}') })
