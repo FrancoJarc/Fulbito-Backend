@@ -3,6 +3,7 @@ import { canchasRouter } from "./routes/canchas.routes.js";
 import { usersRouter } from "./routes/users.routes.js";
 import { authRouter } from "./routes/auth.routes.js";
 import morgan from "morgan";
+import cors from "cors";
 
 const app = express();
 const PORT = 5000;
@@ -10,6 +11,9 @@ const PORT = 5000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
+app.use(cors({
+    origin: "https://localhost:5173"
+}));
 
 
 
