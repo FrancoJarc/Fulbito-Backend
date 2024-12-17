@@ -2,12 +2,12 @@ import jwt from "jsonwebtoken";
 
 const SECRET = "s3cr3t";
 
-export function createToken({ userId, email, role }) {
+export function createToken({ id, correo, rol }) {
     return jwt.sign(
         {
-            id: userId,
-            email,
-            role,
+            id: id,
+            correo,
+            rol,
         },
         SECRET,
         {
@@ -19,3 +19,4 @@ export function createToken({ userId, email, role }) {
 export function verifyToken(token) {
     return jwt.verify(token, SECRET);
 }
+

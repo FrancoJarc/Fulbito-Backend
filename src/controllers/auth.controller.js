@@ -1,5 +1,6 @@
 import { UserService } from "../services/user.service.js";
 import { hashPassword, verifyPassword } from "../utils/hash.js";
+import { createToken, verifyToken } from "../utils/jwt.js";
 
 export class AuthController {
     static async login(req, res) {
@@ -19,9 +20,9 @@ export class AuthController {
             }
 
             const token = createToken({
-                userId: user.id,
-                email: user.correo,
-                role: user.rol,
+                id: user.id,
+                correo: user.correo,
+                rol: user.rol,
             });
 
             res.json({

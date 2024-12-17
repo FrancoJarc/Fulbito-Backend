@@ -8,4 +8,4 @@ export const usersRouter = Router();
 
 usersRouter.get("/", authenticate, UsuarioController.getAll)
 
-usersRouter.post("/", authenticate, authorization("jugador"), UsuarioController.create)
+usersRouter.post("/", authenticate, UsuarioController.create)
