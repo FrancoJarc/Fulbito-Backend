@@ -2,7 +2,7 @@ services:
   postgres:
     image: postgres:13
     environment:
-      - POSTGRES_DB=platform-learning
+      - POSTGRES_DB=FulbitoDB
       - POSTGRES_USER=franco
       - POSTGRES_PASSWORD=franco
     ports:

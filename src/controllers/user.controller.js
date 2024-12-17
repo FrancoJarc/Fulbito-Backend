@@ -20,17 +20,31 @@ export class UsuarioController {
     static async create(req, res) {
         const { nombre, apellido, dni, telefono, correo, contrasena, rol } = req.body; // Segunda forma
 
+        const rolValido = rol === "dueño" ? "dueno" : rol; // Convertir "dueño" a "dueno" si se recibe
+
+        if (rolValido !== "jugador" && rolValido !== "dueno") {
+            return res.status(400).json({
+                error: "Rol no válido. Los valores válidos son 'jugador' y 'dueno'."
+            });
+        }
+
+
         const usuario = {
             nombre,
             apellido,
-            dni,
+            dni: parseInt(dni),
             telefono,
             correo,
             contrasena,
-            rol
+            rol: rol === "dueño" ? "dueno" : rol 
         };
 
         try {
+            const existingUser = await UserService.getByCorreo(correo);
+            if (existingUser) {
+                return res.status(400).json({ error: "El correo ya está registrado." });
+            }
+
             const newUsuario = await UserService.create(usuario);
 
             res.status(201).json({
@@ -61,6 +75,7 @@ export class UsuarioController {
             usuario,
         });
     };
+
 
 
 

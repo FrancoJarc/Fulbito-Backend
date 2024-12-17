@@ -13,14 +13,12 @@ export class UserService {
         })
     }
 
-    static async getByCorreo({
-        correo
-    }) {
+    static async getByCorreo(correo) {
         return prisma.usuarios.findFirst({
             where: {
-                correo
+                correo: correo
             }
-        })
+        });
     }
 
     static async create({ nombre, apellido, dni, telefono, correo, contrasena, rol }) {
