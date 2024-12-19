@@ -7,7 +7,7 @@ export class AuthController {
         const { correo, contrasena, rol } = req.body;
 
         try {
-            const user = await UserService.getByCorreo(correo )
+            const user = await UserService.getByCorreo(correo)
 
             if (!user) {
                 return res.status(401).json({ error: "El usuario no existe" });
@@ -27,6 +27,10 @@ export class AuthController {
                 id: user.id,
                 correo: user.correo,
                 rol: user.rol,
+                nombre: user.nombre,
+                apellido: user.apellido,
+                dni: user.dni,
+                telefono:user.telefono
             });
 
             res.status(200).json({

@@ -9,7 +9,7 @@ export const canchasRouter = Router();
 
 canchasRouter.get("/", authenticate,CanchaController.getAll);
 
-canchasRouter.post("/", authenticate, authorization("dueno"), validateDto(canchaDto), CanchaController.create);
+canchasRouter.post("/", authenticate, authorization("dueno"), CanchaController.create);
 
 canchasRouter.get("/:id", authenticate, validateId, authorization("dueno"), CanchaController.getByID);
 

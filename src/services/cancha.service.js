@@ -32,7 +32,8 @@ export class CanchaService {
                 precio_hora: precio_hora ?? cancha.precio_hora,
                 capacidad: capacidad ?? cancha.capacidad,
                 calle: calle ?? cancha.calle,
-                telefono: telefono ?? cancha.telefono
+                telefono: telefono ?? cancha.telefono,
+                id_usuario: id_usuario ?? undefined,
 
             }
 

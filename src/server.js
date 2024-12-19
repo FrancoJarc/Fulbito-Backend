@@ -4,6 +4,7 @@ import { usersRouter } from "./routes/users.routes.js";
 import { authRouter } from "./routes/auth.routes.js";
 import morgan from "morgan";
 import cors from "cors";
+import { reservasRouter } from "./routes/reservas.routes.js";
 
 const app = express();
 const PORT = 5000;
@@ -25,19 +26,13 @@ app.get("/", (request, response) => {
     });
 });
 
-app.get("/info", (req, res) => {
-    res.json({
-        mensaje: "Información del servidor",
-        version: "0.1.0",
-        auto: "Pablito",
-        framework: "Express",
-    });
-});
+
 
 // Rutas
 app.use("/api/canchas", canchasRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/reservas", reservasRouter);
 
 
 

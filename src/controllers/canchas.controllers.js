@@ -10,13 +10,13 @@ export class CanchaController {
             canchas,
             limit: Number(limit),
             currentPage: Number(page),
-            totalPages: Math.ceil(canchasDB.length / limit),
+            totalPages: Math.ceil(canchas.length / limit),
         });
     }
 
 
     static async create(req, res) {
-        const { nombre, precio_hora, capacidad, calle, telefono } = req.body; // Segunda forma
+        const { nombre, precio_hora, capacidad, calle, telefono, id_usuario } = req.body; // Segunda forma
 
         const precioHoraNum = parseFloat(precio_hora);
         if (isNaN(precioHoraNum) || precioHoraNum <= 0) {
@@ -46,6 +46,7 @@ export class CanchaController {
             capacidad: capacidadNum,
             calle,
             telefono: telefonoNum,
+            id_usuario,
         };
 
         try {
@@ -90,10 +91,10 @@ export class CanchaController {
             return res.status(404).json({ error: "La cancha no existe" });
         }
 
-        const { nombre, precio_hora, capacidad, calle, telefono } = req.body;
+        const { nombre, precio_hora, capacidad, calle, telefono, id_usuario } = req.body;
 
         const updatedCancha = await CanchaService.update({
-            nombre, precio_hora, capacidad, calle, telefono
+            nombre, precio_hora, capacidad, calle, telefono, id_usuario
         })
 
         res.json({

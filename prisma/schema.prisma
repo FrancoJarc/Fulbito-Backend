@@ -17,6 +17,7 @@ model Usuarios {
   contrasena String
   rol        UserRole   @default(jugador)
   Reservas   Reservas[]
+  Canchas    Canchas[]
 }
 
 model Canchas {
@@ -26,6 +27,8 @@ model Canchas {
   capacidad   Int
   precio_hora Float
   calle       String
+  id_usuario  String
+  usuario     Usuarios   @relation(fields: [id_usuario], references: [id])
   Horarios    Horarios[]
   Reservas    Reservas[]
 }
