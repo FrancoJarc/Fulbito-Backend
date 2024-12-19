@@ -22,17 +22,17 @@ export class CanchaService {
         })
     }
 
-    static async update({ nombre, precio_hora, capacidad, calle, telefono }) {
+    static async update({ id, nombre, precio_hora, capacidad, calle, telefono, id_usuario }) {
         return prisma.canchas.update({
             where: {
                 id
             },
             data: {
-                nombre: nombre ?? cancha.nombre,
-                precio_hora: precio_hora ?? cancha.precio_hora,
-                capacidad: capacidad ?? cancha.capacidad,
-                calle: calle ?? cancha.calle,
-                telefono: telefono ?? cancha.telefono,
+                nombre: nombre ?? undefined,
+                precio_hora: precio_hora ?? undefined,
+                capacidad: capacidad ?? undefined,
+                calle: calle ?? undefined,
+                telefono: telefono ?? undefined,
                 id_usuario: id_usuario ?? undefined,
 
             }

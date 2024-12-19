@@ -94,7 +94,7 @@ export class CanchaController {
         const { nombre, precio_hora, capacidad, calle, telefono, id_usuario } = req.body;
 
         const updatedCancha = await CanchaService.update({
-            nombre, precio_hora, capacidad, calle, telefono, id_usuario
+            id,nombre, precio_hora, capacidad, calle, telefono, id_usuario
         })
 
         res.json({
